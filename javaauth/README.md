@@ -5,11 +5,8 @@ The purpose of this plugin is to make sure, that a Java based plugin works as we
 
 ## Usage
 
-See the [plugin configuration file](https://github.com/mesosphere/marathon-example-plugins/blob/master/javaauth/src/main/resources/mesosphere/marathon/example/plugin/javaauth/plugin-conf.json).
-It allows access if username and password are the same with this permissions:
+See the [plugin configuration file](src/main/resources/mesosphere/marathon/example/plugin/javaauth/plugin-conf.json) and the [user permissions file](src/main/resources/mesosphere/marathon/example/plugin/javaauth/user-permissions-conf.json).
 
-- Creation is always allowed
-- View is always allowed
-- Update is allowed only, if the username is ernie
-- Deletion is allowed only on path /test (recursively)
-- KillTask is not allowed
+Marathon re-read the file specified by the `permissions-conf-file` config key every `permissions-conf-file-check-interval-seconds`.
+This allows to update permissions without restarting marathon.
+
