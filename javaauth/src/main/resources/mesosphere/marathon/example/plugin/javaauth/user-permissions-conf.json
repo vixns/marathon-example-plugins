@@ -62,8 +62,11 @@
                 {
                     "allowed": "view",
                     "on": "/"
-                }
-            ],
+                },
+                {
+                    "allowed": "operate",
+                    "on": "/"
+                }            ],
             "user": "admin"
         }
     ]

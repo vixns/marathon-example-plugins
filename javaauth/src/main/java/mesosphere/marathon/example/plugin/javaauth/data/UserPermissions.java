@@ -27,6 +27,18 @@ public class UserPermissions {
         return false;
     }
 
+    public boolean isOperator() {
+        log.debug(String.format("user - %s, operate", user));
+        for(Permission permission: permissions) {
+            if(permission.allowed.equalsIgnoreCase("operate")) {
+                log.info(String.format("AUTHORIZED - user - %s, action - operate", user));
+                return true;
+            }
+        }
+        log.info(String.format("UNAUTHORIZED - user - %s, action - operator", user));
+        return false;
+    }
+
     @Override
     public String toString() {
         StringBuilder userPermissionsJson = new StringBuilder();

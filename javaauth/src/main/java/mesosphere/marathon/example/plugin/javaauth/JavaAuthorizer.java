@@ -4,6 +4,7 @@ import mesosphere.marathon.plugin.Group;
 import mesosphere.marathon.plugin.PathId;
 import mesosphere.marathon.plugin.RunSpec;
 import mesosphere.marathon.plugin.auth.AuthorizedAction;
+import mesosphere.marathon.plugin.auth.AuthorizedResource;
 import mesosphere.marathon.plugin.auth.Authorizer;
 import mesosphere.marathon.plugin.auth.Identity;
 import mesosphere.marathon.plugin.http.HttpRequest;
@@ -25,11 +26,11 @@ public class JavaAuthorizer implements Authorizer {
                 return isAuthorized(identity, action, ((RunSpec) resource).id());
             }
 
-            // We don't get the PathID from View Resource but prior calls ensure the RunSpec is authorized
-            // in general
-            if (action == Action.ViewResource) {
-                return true;
+            // check the "operate" permission, should be improved to allow view/update operating rights.
+            if (resource instanceof AuthorizedResource) {
+                return identity.getUserPermissions().isOperator();
             }
+
             return resource instanceof PathId && isAuthorized(identity, action, (PathId) resource);
         }
         return false;
@@ -51,9 +52,6 @@ public class JavaAuthorizer implements Authorizer {
             case ViewRunSpec:
             case ViewGroup:
                 return principal.getUserPermissions().isAuthorized("view", path.toString());
-            case ViewResource:
-                return true;
-            case UpdateResource:
             default:
                 return false;
         }
